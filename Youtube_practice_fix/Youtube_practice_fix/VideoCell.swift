@@ -17,13 +17,17 @@ class VideoCell: UICollectionViewCell {
     
     let ImgThumbnail:UIImageView = {
         let imgView = UIImageView()
-        imgView.backgroundColor = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1)
+        imgView.image = #imageLiteral(resourceName: "Lkfxpm")
+        imgView.contentMode = .scaleAspectFill
+        imgView.clipsToBounds = true
         return imgView
     }()
     
     let ProfileImage: UIImageView = {
         let imgView = UIImageView()
-        imgView.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        imgView.image = #imageLiteral(resourceName: "souma")
+        imgView.layer.cornerRadius = 22
+        imgView.layer.masksToBounds = true
         return imgView
     }()
     
@@ -36,14 +40,19 @@ class VideoCell: UICollectionViewCell {
     let TxtTitle: UILabel = {
         let txt = UILabel()
         txt.translatesAutoresizingMaskIntoConstraints  = false
-        txt.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
+        txt.text = "Making Ramen Tutorial"
+        txt.font = UIFont.boldSystemFont(ofSize: 16)
         return txt
     }()
     
-    let TxtSubtitle: UILabel = {
-        let txt = UILabel()
+    let TxtSubtitle: UITextView = {
+        let txt = UITextView()
+        txt.textColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
         txt.translatesAutoresizingMaskIntoConstraints = false
-        txt.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
+        txt.text = "SoumaVevo - 1.440.600 views - 1 years ago"
+        txt.textContainerInset = UIEdgeInsets(top: 0, left: -4, bottom: 0, right: 0)
+        txt.isEditable = false
+        txt.isScrollEnabled = false
         return txt
     }()
     
@@ -64,10 +73,10 @@ class VideoCell: UICollectionViewCell {
         addConstraints([NSLayoutConstraint(item: TxtTitle, attribute: .right, relatedBy: .equal, toItem: ImgThumbnail, attribute: .right, multiplier: 1, constant: 0)])
         addConstraints([NSLayoutConstraint(item: TxtTitle, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 0, constant: 20)])
         
-        addConstraints([NSLayoutConstraint(item: TxtSubtitle, attribute: .top, relatedBy: .equal, toItem: TxtTitle, attribute: .bottom, multiplier: 1, constant: 8)])
+        addConstraints([NSLayoutConstraint(item: TxtSubtitle, attribute: .top, relatedBy: .equal, toItem: TxtTitle, attribute: .bottom, multiplier: 1, constant: 4)])
         addConstraints([NSLayoutConstraint(item: TxtSubtitle, attribute: .left, relatedBy: .equal, toItem: ProfileImage, attribute: .right, multiplier: 1, constant: 8)])
         addConstraints([NSLayoutConstraint(item: TxtSubtitle, attribute: .right, relatedBy: .equal, toItem: ImgThumbnail, attribute: .right, multiplier: 1, constant: 0)])
-        addConstraints([NSLayoutConstraint(item: TxtSubtitle, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 0, constant: 20)])
+        addConstraints([NSLayoutConstraint(item: TxtSubtitle, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 0, constant: 30)])
         
         
     }

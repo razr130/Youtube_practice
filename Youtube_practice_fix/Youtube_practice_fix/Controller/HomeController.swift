@@ -24,12 +24,23 @@ class HomeController : UICollectionViewController, UICollectionViewDelegateFlowL
         collectionView.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
         collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
         setUpMenubar()
+        setUpNavMenu()
     }
     
     let menuBar: MenuBar = {
         let menu = MenuBar()
         return menu
     }()
+    
+    func setUpNavMenu() {
+        let searchicon = UIImage(named: "search")?.withRenderingMode(.alwaysOriginal)
+        let searchbutton = UIBarButtonItem(image: searchicon, style: .plain, target: self, action: #selector(handleSearch))
+        navigationItem.rightBarButtonItems = [searchbutton]
+    }
+    
+    @objc func handleSearch() {
+        print("aaaaa")
+    }
     
     private func setUpMenubar() {
         view.addSubview(menuBar)

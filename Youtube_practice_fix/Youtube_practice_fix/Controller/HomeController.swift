@@ -33,13 +33,36 @@ class HomeController : UICollectionViewController, UICollectionViewDelegateFlowL
     }()
     
     func setUpNavMenu() {
-        let searchicon = UIImage(named: "search")?.withRenderingMode(.alwaysOriginal)
-        let searchbutton = UIBarButtonItem(image: searchicon, style: .plain, target: self, action: #selector(handleSearch))
-        navigationItem.rightBarButtonItems = [searchbutton]
+        let menuBtn = UIButton(type: .custom)
+        menuBtn.frame = CGRect(x: 0.0, y: 0.0, width: 20, height: 20)
+        menuBtn.setImage(UIImage(named:"more"), for: .normal)
+        menuBtn.addTarget(self, action: #selector(handleMenu), for: UIControl.Event.touchUpInside)
+        
+        let menubutton = UIBarButtonItem(customView: menuBtn)
+        let currWidthmenu = menubutton.customView?.widthAnchor.constraint(equalToConstant: 18)
+        currWidthmenu?.isActive = true
+        let currHeightmenu = menubutton.customView?.heightAnchor.constraint(equalToConstant: 18)
+        currHeightmenu?.isActive = true
+        
+        
+        let searchBtn = UIButton(type: .custom)
+        searchBtn.frame = CGRect(x: 0.0, y: 0.0, width: 20, height: 20)
+        searchBtn.setImage(UIImage(named:"search"), for: .normal)
+        searchBtn.addTarget(self, action: #selector(handleSearch), for: UIControl.Event.touchUpInside)
+        
+        let searchbutton = UIBarButtonItem(customView: searchBtn)
+        let currWidth = searchbutton.customView?.widthAnchor.constraint(equalToConstant: 18)
+        currWidth?.isActive = true
+        let currHeight = searchbutton.customView?.heightAnchor.constraint(equalToConstant: 18)
+        currHeight?.isActive = true
+        
+        navigationItem.rightBarButtonItems = [menubutton, searchbutton]
     }
     
     @objc func handleSearch() {
         print("aaaaa")
+    }
+    @objc func handleMenu() {
     }
     
     private func setUpMenubar() {

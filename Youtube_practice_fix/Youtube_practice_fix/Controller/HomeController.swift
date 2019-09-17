@@ -13,6 +13,7 @@ class HomeController : UICollectionViewController, UICollectionViewDelegateFlowL
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.navigationBar.isTranslucent = false
         let titlelabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
         titlelabel.text = "Home"
         titlelabel.textColor = .white
@@ -20,7 +21,20 @@ class HomeController : UICollectionViewController, UICollectionViewDelegateFlowL
         navigationItem.titleView = titlelabel
         collectionView?.backgroundColor = UIColor.white
         collectionView.register(VideoCell.self, forCellWithReuseIdentifier: "cellid")
-        
+        collectionView.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
+        setUpMenubar()
+    }
+    
+    let menuBar: MenuBar = {
+        let menu = MenuBar()
+        return menu
+    }()
+    
+    private func setUpMenubar() {
+        view.addSubview(menuBar)
+        view.addConstraintWithFormat(format: "H:|[v0]|", views: menuBar)
+        view.addConstraintWithFormat(format: "V:|[v0(50)]", views: menuBar)
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -42,9 +56,7 @@ class HomeController : UICollectionViewController, UICollectionViewDelegateFlowL
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
+    
     
 }
 

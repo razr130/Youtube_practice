@@ -8,12 +8,9 @@
 
 import UIKit
 
-class VideoCell: UICollectionViewCell {
+class VideoCell: BaseCell {
     
-    override init(frame: CGRect) {
-        super .init(frame: frame)
-        setupviews()
-    }
+    
     
     let ImgThumbnail:UIImageView = {
         let imgView = UIImageView()
@@ -56,7 +53,7 @@ class VideoCell: UICollectionViewCell {
         return txt
     }()
     
-    private func setupviews(){
+    override func setupView(){
         addSubview(ImgThumbnail)
         addSubview(SeparatorLine)
         addSubview(ProfileImage)
@@ -78,23 +75,7 @@ class VideoCell: UICollectionViewCell {
         addConstraints([NSLayoutConstraint(item: TxtSubtitle, attribute: .right, relatedBy: .equal, toItem: ImgThumbnail, attribute: .right, multiplier: 1, constant: 0)])
         addConstraints([NSLayoutConstraint(item: TxtSubtitle, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 0, constant: 30)])
         
-        
     }
-    
-    private func addConstraintWithFormat(format: String, views: UIView...){
-        var viewdictionary = [String: UIView]()
-        for(index, view) in views.enumerated(){
-            let key = "v\(index)"
-            view.translatesAutoresizingMaskIntoConstraints = false
-            viewdictionary[key] = view
-        }
-        
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: viewdictionary))
-    }
-    
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+  
     
 }

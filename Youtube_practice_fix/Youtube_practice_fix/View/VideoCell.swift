@@ -10,56 +10,18 @@ import UIKit
 
 class VideoCell: BaseCell {
     
-    var video: VideoModel? {
-        didSet {
-            TxtTitle.text = video?.Title
-            
-//            ImgThumbnail.image = UIImage(named: video!.ImgThumbnail!)
-            LoadImg()
-           
-            if let profilimage = video?.channel?.ProfileImage {
-                ProfileImage.image = UIImage(named: profilimage)
-            }
-            let numberformatter = NumberFormatter()
-            numberformatter.numberStyle = .decimal
-            TxtSubtitle.text = (video?.channel!.ChannelName)! + " - " + numberformatter.string(from: (video?.views)!)! + " views - "
-            
-            if let title = video?.Title {
-                let size = CGSize(width: frame.width - 16 - 44 - 8 - 16, height: 1000)
-                let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-                let estimatedRect = NSString(string: title).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)], context: nil)
-                
-                if estimatedRect.size.height > 20 {
-                    TxtTitleHeightConstraint!.constant = 44
-                } else {
-                    TxtTitleHeightConstraint!.constant = 20
-                }
-            }
-        }
-    }
-    
-    func LoadImg() {
-        if let ImgThumb = video?.ImgThumbnail {
-            ImgThumbnail.loadImageFromURL(url: ImgThumb)
-        }
-        
-        if let ImgProf = video?.channel?.ProfileImage {
-            ProfileImage.loadImageFromURL(url: ImgProf)
-        }
-    }
-    
-    let ImgThumbnail:UIImageView = {
-        let imgView = UIImageView()
+    let ImgThumbnail: CustomImageView = {
+        let imgView = CustomImageView()
         imgView.contentMode = .scaleAspectFill
         imgView.clipsToBounds = true
         return imgView
     }()
     
-    let ProfileImage: UIImageView = {
-        let imgView = UIImageView()
-        imgView.image = #imageLiteral(resourceName: "souma")
+    let ProfileImage: CustomImageView = {
+        let imgView = CustomImageView()
         imgView.layer.cornerRadius = 22
         imgView.layer.masksToBounds = true
+        imgView.contentMode = .scaleAspectFill
         return imgView
     }()
     
@@ -87,6 +49,47 @@ class VideoCell: BaseCell {
         return txt
     }()
     
+    var video: VideoModel? {
+        didSet {
+            TxtTitle.text = video?.Title
+            
+            LoadProf()
+            LoadImg()
+           
+            if let profilimage = video?.channel?.ProfileImage {
+                ProfileImage.image = UIImage(named: profilimage)
+            }
+            let numberformatter = NumberFormatter()
+            numberformatter.numberStyle = .decimal
+            TxtSubtitle.text = (video?.channel!.ChannelName)! + " - " + numberformatter.string(from: (video?.views)!)! + " views - "
+            
+            if let title = video?.Title {
+                let size = CGSize(width: frame.width - 16 - 44 - 8 - 16, height: 1000)
+                let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+                let estimatedRect = NSString(string: title).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)], context: nil)
+                
+                if estimatedRect.size.height > 20 {
+                    TxtTitleHeightConstraint!.constant = 44
+                } else {
+                    TxtTitleHeightConstraint!.constant = 20
+                }
+            }
+        }
+    }
+    
+    func LoadImg() {
+        if let ImgThumb = video?.ImgThumbnail {
+            ImgThumbnail.loadImageFromURL(urlstring: ImgThumb)
+        }
+    }
+    
+    func LoadProf() {
+        if let ImgProf = video?.channel?.ProfileImage {
+            ProfileImage.loadProfFromURL(urlstring: ImgProf)
+        }
+    }
+    
+        
     var TxtTitleHeightConstraint: NSLayoutConstraint?
     
     override func setupView(){
@@ -114,6 +117,4 @@ class VideoCell: BaseCell {
         addConstraints([NSLayoutConstraint(item: TxtSubtitle, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 0, constant: 30)])
         
     }
-  
-    
 }

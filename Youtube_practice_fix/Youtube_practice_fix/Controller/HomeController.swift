@@ -10,8 +10,13 @@ import UIKit
 
 class HomeController : UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
+    var videolist: [VideoModel]?
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        fetchJSON()
         
         navigationController?.navigationBar.isTranslucent = false
         let titlelabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
@@ -25,6 +30,48 @@ class HomeController : UICollectionViewController, UICollectionViewDelegateFlowL
         collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
         setUpMenubar()
         setUpNavMenu()
+    }
+    
+    func fetchJSON() {
+        let url = NSURL(string: "https://s3-us-west-2.amazonaws.com/youtubeassets/home.json")
+        URLSession.shared.dataTask(with: url! as URL) { (data, response, error) in
+            
+            if error != nil {
+                print(error!)
+                return
+            }
+            
+            do {
+                let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers)
+                self.videolist = [VideoModel]()
+                
+                for dictionary in json as! [[String: AnyObject]] {
+                    
+                    let video = VideoModel()
+                    video.Title = dictionary["title"] as? String
+                    video.ImgThumbnail = dictionary["thumbnail_image_name"] as? String
+                    video.views = dictionary["number_of_views"] as? NSNumber
+                    
+                    let channelDictionary = dictionary["channel"] as! [String: AnyObject]
+                    
+                    let channel = ChannelModel()
+                    channel.ChannelName = channelDictionary["name"] as? String
+                    channel.ProfileImage = channelDictionary["profile_image_name"] as? String
+                    
+                    video.channel = channel
+                    
+                    self.videolist?.append(video)
+                }
+                
+                DispatchQueue.main.async {
+                    self.collectionView?.reloadData()
+                }
+                
+            } catch let jsonError {
+                print(jsonError)
+            }
+            
+            }.resume()
     }
     
     let menuBar: MenuBar = {
@@ -51,18 +98,22 @@ class HomeController : UICollectionViewController, UICollectionViewDelegateFlowL
         searchBtn.addTarget(self, action: #selector(handleSearch), for: UIControl.Event.touchUpInside)
         
         let searchbutton = UIBarButtonItem(customView: searchBtn)
-        let currWidth = searchbutton.customView?.widthAnchor.constraint(equalToConstant: 18)
-        currWidth?.isActive = true
-        let currHeight = searchbutton.customView?.heightAnchor.constraint(equalToConstant: 18)
-        currHeight?.isActive = true
+        searchbutton.customView?.widthAnchor.constraint(equalToConstant: 18).isActive = true
+        searchbutton.customView?.heightAnchor.constraint(equalToConstant: 18).isActive = true
         
-        navigationItem.rightBarButtonItems = [menubutton, searchbutton]
+        
+        let space = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.fixedSpace, target: nil, action: nil)
+        space.width = 30
+        
+        navigationItem.rightBarButtonItems = [menubutton, space, searchbutton]
+    
     }
     
     @objc func handleSearch() {
         print("aaaaa")
     }
     @objc func handleMenu() {
+        print("bbbb")
     }
     
     private func setUpMenubar() {
@@ -72,11 +123,13 @@ class HomeController : UICollectionViewController, UICollectionViewDelegateFlowL
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return videolist?.count ?? 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! VideoCell
+        
+        cell.video = videolist?[indexPath.item]
         return cell
     }
     
@@ -84,7 +137,7 @@ class HomeController : UICollectionViewController, UICollectionViewDelegateFlowL
         
         let heightme = (view.frame.width - 16 - 16) * 9 / 16
         
-        return CGSize(width: view.frame.width, height: heightme + 16 + 68)
+        return CGSize(width: view.frame.width, height: heightme + 16 + 88)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

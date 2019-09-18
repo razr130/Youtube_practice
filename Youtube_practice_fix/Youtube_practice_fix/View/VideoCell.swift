@@ -100,8 +100,8 @@ class VideoCell: BaseCell {
         addSubview(TxtSubtitle)
         
         addConstraintWithFormat(format: "H:|-16-[v0]-16-|", views: ImgThumbnail)
-        addConstraintWithFormat(format: "V:|-16-[v0]-8-[v1(44)]-36-[v2(1)]|", views: ImgThumbnail, ProfileImage, SeparatorLine)
-        addConstraintWithFormat(format: "H:|-16-[v0(44)]", views: ProfileImage)
+        addConstraintWithFormat(format: "V:|-16-[v0]-8-[v1(40)]-36-[v2(1)]|", views: ImgThumbnail, ProfileImage, SeparatorLine)
+        addConstraintWithFormat(format: "H:|-16-[v0(40)]", views: ProfileImage)
         addConstraintWithFormat(format: "H:|[v0]|", views: SeparatorLine)
         
         addConstraints([NSLayoutConstraint(item: TxtTitle, attribute: .top, relatedBy: .equal, toItem: ImgThumbnail, attribute: .bottom, multiplier: 1, constant: 8)])

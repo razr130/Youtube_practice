@@ -112,8 +112,10 @@ class HomeController : UICollectionViewController, UICollectionViewDelegateFlowL
     @objc func handleSearch() {
         print("aaaaa")
     }
+    
+    let settingCon = SettingController()
     @objc func handleMenu() {
-        print("bbbb")
+        settingCon.openSettings()
     }
     
     private func setUpMenubar() {

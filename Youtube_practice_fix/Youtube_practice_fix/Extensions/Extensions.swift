@@ -21,6 +21,14 @@ extension UIView {
     }
 }
 
+extension UIImageView {
+    func setImageColor(color: UIColor) {
+        let templateImage = self.image?.withRenderingMode(.alwaysTemplate)
+        self.image = templateImage
+        self.tintColor = color
+    }
+}
+
 let imagechache = NSCache<AnyObject, AnyObject>()
 
 class CustomImageView: UIImageView {
